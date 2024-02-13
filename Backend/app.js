@@ -10,18 +10,27 @@ const { PORT } = configServer;
 const server = createServer(app);
 
 // To create a socket/circuit
-const io = new Server(server,{
-  cors:{
-    origin: '*',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
 io.on("connection", (socket) => {
-  console.log("User connected");
-  console.log("UserId", socket.id);
+  console.log("User connected with id", socket.id);
+
+  socket.emit("Welcome", "Welcome to the Server");
+  socket.broadcast.emit("Welcome", `${socket.id} joined the server.`);
+
+  socket.on("Message", (data)=>{
+    console.log(data);
+  })
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
 });
 
 app.get("/", (req, res) => {
