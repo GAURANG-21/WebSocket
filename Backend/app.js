@@ -24,9 +24,13 @@ io.on("connection", (socket) => {
   socket.emit("Welcome", "Welcome to the Server");
   socket.broadcast.emit("Welcome", `${socket.id} joined the server.`);
 
-  socket.on("Message", (data)=>{
+  socket.on("Message", (data) => {
     console.log(data);
-  })
+
+    //socket.broadcast.emit is only for server side.
+    //To send message to rest of the users, use io.emit(with the eventName)
+    socket.broadcast.emit("receive-message", data);
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
