@@ -24,15 +24,18 @@ io.on("connection", (socket) => {
   socket.emit("Welcome", "Welcome to the Server");
   socket.broadcast.emit("welcome", `${socket.id} joined the server.`);
 
-  socket.on("Message", ({room, message}) => {
-    room = room.split(',');
-    console.log((room), message);
+  socket.on("Message", ({ room, message }) => {
+    room = room.split(",");
+    console.log(room, message);
 
-    if(room[0]!='') io.to(room).emit('receive-message', message);
-    else
+    if (room[0] != "") io.to(room).emit("receive-message", message);
     //socket.broadcast.emit is only for server side.
     //To send message to rest of the users, use io.emit(with the eventName)
-    socket.broadcast.emit("receive-message", message);
+    else socket.broadcast.emit("receive-message", message);
+  });
+
+  socket.on("join-room", (roomName) => {
+    socket.join(roomName);
   });
 
   socket.on("disconnect", () => {
