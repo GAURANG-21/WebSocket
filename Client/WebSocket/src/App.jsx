@@ -11,7 +11,7 @@ import {
 
 function App() {
   //If no URL is given in io, then it will host the io OR assume the io(circuit) onto the same server it is running
-  const socket = useMemo(() => io("http://localhost:3000/"), []);
+  const socket = useMemo(() => io("https://websocket-2-flsd.onrender.com"), []);
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
   const [socketId, setSocketId] = useState("");
